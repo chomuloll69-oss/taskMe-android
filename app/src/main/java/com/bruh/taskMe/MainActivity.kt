@@ -34,7 +34,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TodoTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
@@ -45,14 +44,10 @@ fun TodoTheme(content: @Composable () -> Unit) {
         dark -> darkColorScheme()
         else -> lightColorScheme()
     }
-    MaterialExpressiveTheme(
-        colorScheme = colors,
-        motionScheme = MotionScheme.expressive(),
-        content = content
-    )
+    MaterialTheme(colorScheme = colors, content = content)
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoScreen() {
     val todos = remember { mutableStateListOf<Todo>() }
@@ -62,9 +57,8 @@ fun TodoScreen() {
     Scaffold(
         modifier = Modifier.nestedScroll(scroll.nestedScrollConnection),
         topBar = {
-            LargeFlexibleTopAppBar(
-                title = { Text("taskMe") },
-                subtitle = { Text("${todos.count { !it.done }} left 😮‍💨") },
+            LargeTopAppBar(
+                title = { Text("taskMe · ${todos.count { !it.done }} left 😮‍💨") },
                 scrollBehavior = scroll
             )
         },
